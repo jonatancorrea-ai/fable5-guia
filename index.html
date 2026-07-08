@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>5 superpoderes de Claude Fable 5 – Jonatan Correa</title>
+<meta name="description" content="Guía rápida y práctica de Claude Fable 5: 5 capacidades clave y 3 casos de uso con system prompts listos para copiar y pegar." />
+
+<style>
+:root{
+  --bg:#171310;
+  --card:#211a15;
+  --card-border:rgba(217,119,87,0.18);
+  --card-border-hover:rgba(217,119,87,0.4);
+  --accent:#d97757;
+  --accent-bright:#e8916f;
+  --accent-soft:rgba(217,119,87,0.14);
+  --text:#f4f1ea;
+  --muted:#b7aca0;
+  --code-bg:#0f0c0a;
+  --font-display:Georgia,'Times New Roman',serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.16,.84,.44,1);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  font-family:var(--font-body);
+  background:
+    radial-gradient(circle at 50% 0%, rgba(217,119,87,0.12), transparent 45%),
+    var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  line-height:1.5;
+}
+
+a{color:inherit;}
+
+/* NAV */
+nav{
+  position:sticky;
+  top:0;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  background:rgba(23,19,16,0.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--card-border);
+  padding:14px 20px;
+  z-index:10;
+}
+
+.mark{
+  width:22px;height:22px;flex-shrink:0;
+  animation:pulse 4s ease-in-out infinite;
+  transform-origin:center;
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1) rotate(0deg);opacity:1;}
+  50%{transform:scale(1.1) rotate(8deg);opacity:0.85;}
+}
+
+nav span{
+  font-weight:600;
+  font-size:14px;
+  letter-spacing:0.2px;
+}
+
+/* CONTAINER */
+.container{
+  max-width:720px;
+  margin:0 auto;
+  padding:0 20px;
+}
+
+/* HERO */
+.hero{
+  text-align:center;
+  padding:52px 0 32px;
+}
+
+.badge{
+  display:inline-block;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.4px;
+  color:var(--accent);
+  background:var(--accent-soft);
+  border:1px solid var(--card-border);
+  padding:6px 14px;
+  border-radius:999px;
+  margin-bottom:20px;
+  transition:border-color 0.2s var(--ease);
+}
+
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(30px,5vw + 8px,48px);
+  line-height:1.18;
+  font-weight:700;
+  letter-spacing:-0.4px;
+}
+
+.hero p{
+  margin-top:14px;
+  font-size:16px;
+  color:var(--muted);
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.btn{
+  display:inline-block;
+  margin-top:24px;
+  padding:14px 26px;
+  background:var(--accent);
+  color:#171310;
+  border:none;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:700;
+  font-size:15px;
+  cursor:pointer;
+  transition:transform 0.2s var(--ease), box-shadow 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(217,119,87,0.35);
+}
+.btn:active{transform:translateY(0) scale(0.97);}
+
+/* SECTIONS */
+.section{
+  padding:42px 0 0;
+  border-top:1px solid var(--card-border);
+}
+
+.eyebrow{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:6px;
+}
+
+h2{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.6vw + 12px,30px);
+  margin-bottom:8px;
+  letter-spacing:-0.2px;
+}
+
+.section-intro{
+  color:var(--muted);
+  font-size:15px;
+  margin-bottom:22px;
+  max-width:560px;
+}
+
+/* CAPABILITY CARDS */
+.cap-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+}
+
+.cap-card{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:14px;
+  padding:18px;
+  display:flex;
+  gap:14px;
+  transition:transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.cap-card:hover{
+  transform:translateY(-3px);
+  border-color:var(--card-border-hover);
+  box-shadow:0 14px 30px rgba(0,0,0,0.35);
+}
+
+.cap-num{
+  font-family:var(--font-display);
+  font-size:22px;
+  color:var(--accent);
+  flex-shrink:0;
+  width:26px;
+  transition:color 0.25s var(--ease);
+}
+
+.cap-card:hover .cap-num{color:var(--accent-bright);}
+
+.cap-card h3{
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.cap-card p{
+  font-size:14px;
+  color:var(--muted);
+}
+
+.cap-example{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--text);
+  background:var(--accent-soft);
+  border-radius:8px;
+  padding:8px 12px;
+}
+
+/* USE CASE CARDS */
+.usecase{
+  background:var(--card);
+  border:1px solid var(--card-border);
+  border-radius:16px;
+  padding:20px;
+  margin-bottom:14px;
+  transition:border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.usecase:hover{
+  border-color:var(--card-border-hover);
+  transform:translateY(-2px);
+}
+
+.usecase h3{
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+.usecase p{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:14px;
+}
+
+.prompt-box{
+  position:relative;
+  background:var(--code-bg);
+  border:1px solid var(--card-border);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.prompt-label{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:8px 12px;
+  border-bottom:1px solid var(--card-border);
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:0.4px;
+  text-transform:uppercase;
+}
+
+.copy-btn{
+  background:var(--accent-soft);
+  color:var(--accent);
+  border:none;
+  border-radius:6px;
+  padding:5px 10px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  font-family:var(--font-body);
+  transition:background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.copy-btn:hover{
+  background:rgba(217,119,87,0.26);
+  transform:translateY(-1px);
+}
+
+pre{
+  padding:16px;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+  line-height:1.6;
+  color:#e8ded4;
+  overflow-x:auto;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+  padding:44px 0 8px;
+}
+
+.cta h2{margin-bottom:10px;}
+
+.cta p{
+  color:var(--muted);
+  font-size:15px;
+  margin-bottom:6px;
+  max-width:480px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:22px 20px;
+  margin-top:36px;
+  font-size:12px;
+  color:var(--muted);
+  border-top:1px solid var(--card-border);
+}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.6s var(--ease), transform 0.6s var(--ease);}
+.reveal.show{opacity:1;transform:translateY(0);}
+
+/* DESKTOP */
+@media (min-width:760px){
+  .container{max-width:880px;}
+  .cap-grid{grid-template-columns:1fr 1fr;}
+  .hero{padding:64px 0 40px;}
+  .section{padding:48px 0 0;}
+  .cta{padding:56px 0 12px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <svg class="mark" viewBox="0 0 24 24" fill="none">
+    <path d="M12 2 L13.8 9.2 L21 12 L13.8 14.8 L12 22 L10.2 14.8 L3 12 L10.2 9.2 Z" fill="#d97757"/>
+  </svg>
+  <span>Guía Fable 5 · IA Simplificada</span>
+</nav>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero reveal">
+    <span class="badge">CLAUDE FABLE 5</span>
+    <h1>5 superpoderes de Claude Fable 5</h1>
+    <p>El modelo más potente que ha lanzado Anthropic, explicado sin tecnicismos — y 3 formas concretas de usarlo hoy mismo.</p>
+    <a class="btn" href="#capacidades">Ver la guía</a>
+  </div>
+
+  <!-- CAPACIDADES -->
+  <div class="section reveal" id="capacidades">
+    <h2>Lo que cambia con Fable 5</h2>
+    <p class="section-intro">Fable 5 no es solo "más rápido" o "más inteligente". Es el primer modelo pensado para trabajar como un empleado extra: toma una tarea grande, la trabaja solo durante horas, y te entrega un resultado terminado.</p>
+
+    <div class="cap-grid">
+
+      <div class="cap-card">
+        <div class="cap-num">01</div>
+        <div>
+          <h3>Trabaja solo, sin que lo estés vigilando</h3>
+          <p>Le das una tarea grande y no necesitas estar encima cada 5 minutos. Sigue trabajando por horas — incluso días — revisando su propio avance en el camino.</p>
+          <div class="cap-example">📌 Organiza una base de datos completa de clientes o arma un reporte financiero extenso, de principio a fin.</div>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-num">02</div>
+        <div>
+          <h3>"Ve" tus documentos, no solo los lee</h3>
+          <p>Interpreta gráficos, tablas y diagramas dentro de PDFs — no solo texto plano.</p>
+          <div class="cap-example">📌 Le subes un PDF con gráficas de ventas y te explica exactamente qué dice, sin transcribir nada.</div>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-num">03</div>
+        <div>
+          <h3>Arma proyectos completos y revisa su propio trabajo</h3>
+          <p>Se encarga de un proyecto de principio a fin, y compara el resultado con lo que pediste — como un control de calidad automático.</p>
+          <div class="cap-example">📌 Aunque no programes, puedes pedir una herramienta completa, no solo un pedazo suelto de código.</div>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-num">04</div>
+        <div>
+          <h3>Entrega trabajo terminado, no un borrador a medias</h3>
+          <p>Entrega investigaciones y análisis ya armados, listos para revisar y ajustar — no fragmentos sueltos.</p>
+          <div class="cap-example">📌 Un análisis de mercado completo llega organizado, no en pedazos.</div>
+        </div>
+      </div>
+
+      <div class="cap-card">
+        <div class="cap-num">05</div>
+        <div>
+          <h3>Tiene filtros de seguridad incorporados</h3>
+          <p>Si alguien intenta usarlo para algo riesgoso, responde con un modelo más limitado en su lugar, en vez de arriesgarse.</p>
+          <div class="cap-example">📌 Para tu negocio: una herramienta confiable desde el día uno.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CASOS DE USO -->
+  <div class="section reveal">
+    <div class="eyebrow">Ahora es tu turno</div>
+    <h2>Casos de uso para aprovechar al máximo Fable 5</h2>
+    <p class="section-intro">Copia el system prompt, pégalo en Claude Code, y ajusta el objetivo a tu proyecto.</p>
+
+    <div class="usecase">
+      <h3>1️⃣ Audita tu propio flujo de trabajo en Claude Code</h3>
+      <p>Antes de lanzarte a usar Fable 5 en tu día a día, pídele que revise cómo has estado trabajando hasta ahora: qué repites, dónde pierdes tiempo, qué deberías automatizar.</p>
+      <div class="prompt-box">
+        <div class="prompt-label">System prompt<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+        <pre>Eres un auditor experto en flujos de trabajo con Claude Code. Tu tarea es analizar el historial de sesiones, comandos y decisiones del usuario dentro de este proyecto para identificar patrones de uso.
+
+Al analizar, evalúa:
+1. Tareas repetitivas que podrían automatizarse o convertirse en un script/skill reutilizable.
+2. Cuellos de botella: pasos donde el usuario corrige, repite instrucciones o pierde tiempo.
+3. Uso ineficiente de contexto (archivos innecesarios cargados, instrucciones ambiguas, falta de estructura en las peticiones).
+4. Oportunidades de delegar más trabajo de forma autónoma en vez de supervisar paso a paso.
+
+Entrega un diagnóstico claro y honesto en este formato:
+- Qué está funcionando bien (2-3 puntos)
+- Qué está frenando la eficiencia (2-3 puntos)
+- 3 recomendaciones concretas y accionables para mejorar el flujo de trabajo, ordenadas por impacto
+
+No uses tecnicismos innecesarios. Sé directo y específico, con ejemplos tomados del propio historial cuando sea posible.</pre>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <h3>2️⃣ Haz un code review de tus proyectos importantes</h3>
+      <p>Le pides que revise el código de un proyecto real como si fuera un ingeniero senior — buscando errores y riesgos — antes de lanzarlo a producción.</p>
+      <div class="prompt-box">
+        <div class="prompt-label">System prompt<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+        <pre>Actúa como un ingeniero de software senior realizando un code review exhaustivo de este proyecto.
+
+Revisa el código enfocándote en:
+1. Bugs o errores lógicos que puedan causar fallos.
+2. Riesgos de seguridad (validación de datos, manejo de credenciales, dependencias vulnerables).
+3. Código duplicado, complejidad innecesaria u oportunidades de simplificación.
+4. Rendimiento: partes del código que podrían ser lentas o consumir recursos de más.
+5. Buenas prácticas: nombres de variables, estructura, documentación faltante.
+
+Para cada hallazgo, indica:
+- Archivo y ubicación aproximada
+- Nivel de severidad (crítico / importante / menor)
+- Qué está mal y por qué importa
+- Cómo solucionarlo (con ejemplo de código si aplica)
+
+Al final, entrega un resumen ejecutivo con el estado general del proyecto y las 3 prioridades más urgentes antes de lanzar a producción.</pre>
+      </div>
+    </div>
+
+    <div class="usecase">
+      <h3>3️⃣ Construye tu propio sistema operativo de agentes</h3>
+      <p>Fable 5 puede ayudarte a diseñar un equipo de agentes de IA especializados que se coordinan entre sí, como armar tu propio equipo de asistentes.</p>
+      <div class="prompt-box">
+        <div class="prompt-label">System prompt<button class="copy-btn" onclick="copyPrompt(this)">Copiar</button></div>
+        <pre>Eres un arquitecto de sistemas multi-agente. Tu tarea es diseñar y construir, paso a paso, un sistema operativo de agentes personalizado dentro de este proyecto de Claude Code.
+
+El sistema debe incluir:
+1. Un agente orquestador que reciba la tarea principal del usuario y la divida en subtareas.
+2. Agentes especializados (define cuáles según el objetivo del usuario: investigación, redacción, código, revisión de calidad, etc.), cada uno con su propio propósito claro y límites definidos.
+3. Un protocolo de traspaso de trabajo entre agentes (qué información se pasa, en qué formato, y cómo se valida antes de avanzar al siguiente paso).
+4. Un mecanismo de revisión final donde el agente orquestador verifica que el resultado combinado cumple con el objetivo original antes de entregarlo al usuario.
+
+Antes de construir nada, pregúntame:
+- Cuál es el objetivo principal que este sistema de agentes debe resolver
+- Qué tareas se repiten con más frecuencia en mi trabajo
+
+Con esas respuestas, propón la arquitectura completa (agentes, roles, flujo de trabajo) antes de empezar a programar.</pre>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="cta reveal">
+    <h2>¿Quieres aprender a implementar Claude en tu negocio?</h2>
+    <p>Reserva una llamada gratuita conmigo y te muestro cómo aplicar Fable 5 — y el resto de las herramientas de Claude — en tu día a día.</p>
+    <a class="btn" href="https://cal.com/jonatancorrea/smartmeet?overlayCalendar=true" target="_blank" rel="noopener">Reservar mi llamada gratis</a>
+  </div>
+
+</div>
+
+<footer>
+  Creado por Jonatan Correa · Consultor y Divulgador IA · 2026 · Todos los derechos reservados.
+</footer>
+
+<script>
+function copyPrompt(btn){
+  const pre = btn.closest('.prompt-box').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent.trim()).then(()=>{
+    const original = btn.textContent;
+    btn.textContent = '¡Copiado! ✅';
+    setTimeout(()=>{ btn.textContent = original; }, 1800);
+  });
+}
+
+const els = document.querySelectorAll('.reveal');
+const obs = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+},{threshold:0.1});
+els.forEach(e=>obs.observe(e));
+</script>
+
+</body>
+</html>
